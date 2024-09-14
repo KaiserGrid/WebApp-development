@@ -6,6 +6,37 @@
     <title>Todo List App</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="styles.css">
+    <script src="https://apis.google.com/js/api:client.js"></script>
+    <script>
+        function initGoogleSignIn() {
+            gapi.load('auth2', function() {
+                gapi.auth2.init({
+                    client_id: '282800103988-rhdmjdl5jks67sp6f4c4l5g4h5kgg8iq.apps.googleusercontent.com', // Replace with your Client ID
+                    scope: 'profile email'
+                }).then(function(auth2) {
+                    attachSignin(document.getElementById('login-button'), auth2);
+                });
+            });
+        }
+
+        function attachSignin(element, auth2) {
+            auth2.attachClickHandler(element, {},
+                function(googleUser) {
+                    var profile = googleUser.getBasicProfile();
+                    console.log('ID: ' + profile.getId());
+                    console.log('Name: ' + profile.getName());
+                    console.log('Image URL: ' + profile.getImageUrl());
+                    console.log('Email: ' + profile.getEmail());
+                }, function(error) {
+                    console.log(JSON.stringify(error, undefined, 2));
+                });
+        }
+
+        // Initialize Google Sign-In when the page loads
+        window.onload = function() {
+            initGoogleSignIn();
+        };
+    </script>
 </head>
 <body>
     <div class="container">
@@ -20,14 +51,4 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="script.js"></script>
 </body>
-<script src="https://apis.google.com/js/api:client.js"></script>
-<script>
-    function onSignIn(googleUser) {
-      var profile = googleUser.getBasicProfile();
-      console.log('ID: ' + profile.getId());
-      console.log('Name: ' + profile.getName());
-      console.log('Image URL: ' + profile.getImageUrl());
-      console.log('Email: ' + profile.getEmail());
-    }
-  </script>  
 </html>
